@@ -1,0 +1,22 @@
+name: update
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv run python -m bignews.update bleepingcomputer
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+      - run: uv run python -m bignews.update arxiv_cs_cr
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+      - run: uv run python -m bignews.update arxiv_cs_ai
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
