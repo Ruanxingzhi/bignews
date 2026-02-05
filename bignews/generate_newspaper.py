@@ -36,7 +36,11 @@ def main():
     articles = MongoClient(os.getenv('MONGO_URI')).bignews.articles
     newspapers = MongoClient(os.getenv('MONGO_URI')).bignews.newspapers
 
-    last_newspaper_time = newspapers.find_one(sort=[("generated_at", -1)])['generated_at'] or datetime.now(UTC) - timedelta(days=2)
+    if l := newspapers.find_one(sort=[("generated_at", -1)]):
+        last_newspaper_time = l['generated_at']
+    else:
+        last_newspaper_time = datetime.now(UTC) - timedelta(days=2)
+
     print(f"{last_newspaper_time = }")
 
     def get_articles(source):
