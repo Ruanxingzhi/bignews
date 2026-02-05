@@ -1,18 +1,15 @@
 import sys
 import os
+import traceback
+
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.errors import BulkWriteError
 
-from bignews.util import fetch_rss
+from bignews.util import fetch_rss, SOURCES
 
 load_dotenv()
 
-SOURCES = {
-    'bleepingcomputer': 'https://www.bleepingcomputer.com/feed/',
-    'arxiv_cs_cr': 'https://rss.arxiv.org/atom/cs.cr',
-    'arxiv_cs_ai': 'https://rss.arxiv.org/atom/cs.ai',
-}
 
 def main():
     source = sys.argv[1]
@@ -27,4 +24,7 @@ def main():
         print(f"insert: {e.details['nInserted']}")
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except:
+        traceback.print_exc()

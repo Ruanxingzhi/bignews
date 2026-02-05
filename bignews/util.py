@@ -18,3 +18,10 @@ def fetch_rss(url):
         }
         for entry in feed.entries
     ]
+
+
+SOURCES = {
+    'bleepingcomputer': 'https://www.bleepingcomputer.com/feed/',
+    'arxiv_cs_cr': 'https://rss.arxiv.org/atom/cs.cr',
+    'arxiv_cs_ai': 'https://rss.arxiv.org/atom/cs.ai',
+}
