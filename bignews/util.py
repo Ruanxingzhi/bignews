@@ -4,8 +4,12 @@ from datetime import datetime, UTC
 def fetch_rss(url):
     feed = feedparser.parse(url)
     fetched_at = datetime.now(UTC)
-    return [
-        {
+    res = []
+    for entry in feed.entries:
+        announce_type = entry.get('arxiv_announce_type')
+        if announce_type and announce_type != 'new':
+            continue
+        res.append({
             'title': entry.get('title', ''),
             'link': entry.get('link', ''),
             'description': entry.get('summary', '') or entry.get('description', ''),
@@ -15,13 +19,12 @@ def fetch_rss(url):
             '_id': url + '/' + (entry.get('id', '') or entry.get('guid', '')),
             'source': url,
             'fetched_at': fetched_at,
-        }
-        for entry in feed.entries
-    ]
+        })
+    return res
 
 
 SOURCES = {
     'bleepingcomputer': 'https://www.bleepingcomputer.com/feed/',
     'arxiv_cs_cr': 'https://rss.arxiv.org/atom/cs.cr',
-    'arxiv_cs_ai': 'https://rss.arxiv.org/atom/cs.ai',
+    'arxiv_cs_ai': 'https://rss.arxiv.org/atom/cs.ai+cs.cl',
 }

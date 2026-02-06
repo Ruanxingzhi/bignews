@@ -44,7 +44,7 @@ def main():
     print(f"{last_newspaper_time = }")
 
     def get_articles(source):
-        return list(articles.find({"fetched_at": {"$gt": last_newspaper_time}, "source": SOURCES[source]}))[:100]
+        return list(articles.find({"fetched_at": {"$gt": last_newspaper_time}, "source": SOURCES[source]}))[:200]
 
     def enrich(id_intro, full):
         res = []
